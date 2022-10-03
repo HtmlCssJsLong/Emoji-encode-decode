@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <title>Emoji encode decode</title>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center">Emoji encode - decode</h1>
+    <div class="row g-2">
+      <div class="col-12 col-sm-6 p-4 border border-primary">
+        <form id="encode-form">
+          <div class="mb-3">
+            <label for="encode-input" class="form-label">Nội dung tin nhắn</label>
+            <input type="text" class="form-control" id="encode-input" placeholder="Nhập tin nhắn">
+          </div>
+          <button type="submit" class="btn btn-primary">Mã hóa</button>
+          <div class="mb-3">
+            <label for="encode-output" class="form-label">Nội dung emoji</label>
+            <input type="text" class="form-control" id="encode-output" placeholder="Nội dung tin nhắn emoji">
+          </div>
+        </form>
+      </div>
+      <div class="col-12 col-sm-6 p-4 border border-danger">
+        <form id="decode-form">
+          <div class="mb-3">
+            <label for="decode-input" class="form-label">Nội dung emoji</label>
+            <input type="text" class="form-control" id="decode-input" placeholder="Nhập tin nhắn emoji">
+          </div>
+          <button type="submit" class="btn btn-primary">Giải mã</button>
+          <div class="mb-3">
+            <label for="decode-output" class="form-label">Nội dung tin nhắn</label>
+            <input type="text" class="form-control" id="decode-output" placeholder="Nội dung tin nhắn">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+</body>
+<script>
+  const mapping = {
+    '😃': 'a',
+    '😄': 'ă',
+    '😁': 'â',
+    '😆': 'b',
+    '😅': 'c',
+    '😂': 'd',
+    '🤣': 'đ',
+    '🥲': 'e',
+    '😊': 'ê',
+    '😇': 'g',
+    '🙂': 'h',
+    '🙃': 'i',
+    '😉': 'k',
+    '😌': 'l',
+    '😍': 'm',
+    '🥰': 'n',
+    '😘': 'o',
+    '😗': 'ô',
+    '😙': 'ơ',
+    '😚': 'p',
+    '😋': 'q',
+    '😛': 'r',
+    '😝': 's',
+    '😜': 't',
+    '🤪': 'u',
+    '🤨': 'ư',
+    '🧐': 'v',
+    '🤓': 'x',
+    '😎': 'y',
+    '.': ' ',
+    '🤩': 'à',
+    '🥳': 'á',
+    '😏': 'ả',
+    '😒': 'ã',
+    '😞': 'ạ',
+    '😔': 'ằ',
+    '😟': 'ắ',
+    '😕': 'ẳ',
+    '😣': 'ẵ',
+    '😖': 'ặ',
+    '😫': 'ầ',
+    '😩': 'ấ',
+    '🥺': 'ẩ',
+    '😢': 'ẫ',
+    '😭': 'ậ',
+    '😤': 'è',
+    '😠': 'é',
+    '😡': 'ẻ',
+    '🤬': 'ẽ',
+    '🤯': 'ẹ',
+    '😳': 'ề',
+    '🥵': 'ế',
+    '🥶': 'ể',
+    '😱': 'ễ',
+    '😨': 'ệ',
+    '😰': 'ò',
+    '😥': 'ó',
+    '😓': 'ỏ',
+    '🤗': 'õ',
+    '🤔': 'ọ',
+    '🤭': 'ồ',
+    '🤫': 'ố',
+    '🤥': 'ổ',
+    '😶': 'ỗ',
+    '😐': 'ộ',
+    '😑': 'ờ',
+    '😬': 'ớ',
+    '🙄': 'ở',
+    '😯': 'ỡ',
+    '😦': 'ợ',
+    '😧': 'ù',
+    '😮': 'ú',
+    '😲': 'ủ',
+    '🥱': 'ũ',
+    '😴': 'ụ',
+    '🤤': 'ừ',
+    '😪': 'ứ',
+    '😵': 'ử',
+    '🤐': 'ữ',
+    '🥴': 'ự',
+    '🤢': 'ì',
+    '🤮': 'í',
+    '🤧': 'ỉ',
+    '😷': 'ĩ',
+    '🤒': 'ị',
+    '🤕': 'ỳ',
+    '🤑': 'ý',
+    '🤠': 'ỷ',
+    '😈': 'ỹ',
+    '👿': 'ỵ',
+  }
+  const _this = this
+  const encodeForm = document.getElementById('encode-form')
+  const encodeInput = document.getElementById('encode-input')
+  const encodeOutput = document.getElementById('encode-output')
+
+  const decodeForm = document.getElementById('decode-form')
+  const decodeInput = document.getElementById('decode-input')
+  const decodeOutput = document.getElementById('decode-output')
+
+  encodeForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const input = String(encodeInput.value).trim().toLocaleLowerCase()
+    let output = ''
+    for (let character of input) {
+      output += _this.getEncode(character)
+    }
+    encodeOutput.value = output
+  })
+
+  decodeForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    const input = String(decodeInput.value).trim().toLocaleLowerCase()
+    let output = ''
+    for (let character of input) {
+      output += _this.getDecode(character)
+    }
+    decodeOutput.value = output
+  })
+
+  function getEncode(value = ' ') {
+    for (let key in mapping) {
+      if (mapping[key] === value) return key
+    }
+    return value
+  }
+
+  function getDecode(value = '.') {
+    for (let key in mapping) {
+      if (key === value) return mapping[key]
+    }
+    return value
+  }
+
+  function bootstrap() {
+    encodeInput.value = "Em ăn gạo luộc chưa?"
+    encodeInput.focus()
+    document.querySelector('#encode-form button').click()
+
+  }
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    _this.bootstrap()
+  });
+
+</script>
+</body>
+
+</html>
